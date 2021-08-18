@@ -1,0 +1,25 @@
+{
+    "name": "rasclatt/coinzoom",
+    "type": "library",
+    "description": "Class Library For the Coinzoom API",
+    "keywords": ["coinzoom","API","framework","mlm"],
+    "homepage": "https://github.com/rasclatt/coinzoom",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Rayner",
+            "email": "rasclatt@me.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "rasclatt/nubersoft": "1.*",
+        "guzzlehttp/guzzle": "*"
+    },
+    "autoload": {
+		"psr-4": {
+			"CoinZoom\\": "src/"
+		}
+	}
+}
