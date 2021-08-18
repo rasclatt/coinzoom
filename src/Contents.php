@@ -178,4 +178,13 @@ class Contents implements \HttpClient\IHttpClient
             'context' => $this->context
         ];
     }
+    /**
+     *	@description	Single mechanism to fetch posts
+     */
+    protected function fetchPost($service, $Dto)
+    {
+        return $this->setService("{$service}/")
+            ->addBody($Dto->toArray())
+            ->post();
+    }
 }

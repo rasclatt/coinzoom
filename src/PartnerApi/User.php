@@ -61,15 +61,6 @@ class User extends \CoinZoom\Contents
         return new GetSummaryResponse($this->fetchPost('get', $Dto));
     }
     /**
-     *	@description	Single mechanism to fetch posts
-     */
-    private function fetchPost($service, $Dto)
-    {
-        return $this->setService("{$service}/")
-            ->addBody($Dto->toArray())
-            ->post();
-    }
-    /**
      *	@description	Allows altering of the Coinzoom tier
      */
     public function alterTierList(string $tier, $action = true)
