@@ -2,6 +2,7 @@
 namespace CoinZoom;
 
 use \CoinZoom\Currency;
+use \CoinZoom\Dto\Order\CreateRequest as OrderCreateRequest;
 use \CoinZoom\PartnerApi\Dto\PaymentGateway\Create as PaymentGatewayDto;
 
 class Order extends Contents
@@ -51,18 +52,25 @@ class Order extends Contents
                 'price' => $currencies[$curr]
             ];
         }
-        $send = $this->setService(__FUNCTION__)
-            ->addBody((new PaymentGatewayDto([
-                'description' => "Create order for invoice #{$this->_invoice} for user {$this->_distid}",
-                'invoiceNumber' => $this->_invoice,
-                'returnUrl' => (!empty($this->_webhook))? $this->_webhook : null,
-                'expiryMinutes' => $this->expiration,
-                'prices' => $allowed
-            ]))->toArray());
-            
-        $data = $send->post();
+        # Create body object
+        $body = new OrderCreateRequest([
+            'description' => "Create order for invoice #{$this->_invoice} for user {$this->_distid}",
+            'invoiceNumber' => $this->_invoice,
+            'returnUrl' => (!empty($this->_webhook))? $this->_webhook : null,
+            'expiryMinutes' => $this->expiration,
+            'prices' => $allowed
+        ]);
+
+        $compile = $this->setService(__FUNCTION__)->addBody($body->toArray());
+        $response = $compile->post();
         
-        return $data;
+        if(empty($response)) {
+            $h = $compile->getResponseHeaders();
+            $e = str_replace('HTTP/1.1','', array_shift($h));
+            throw new \Exception($e, preg_replace('/[^\d]/','',$e));
+        }
+
+        return $response;
     }
     /**
      *	@description	

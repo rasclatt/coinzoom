@@ -155,7 +155,7 @@ class Contents implements \HttpClient\IHttpClient
      */
     public function getResponse()
     {
-        return ($this->sendType == 'json')? json_decode($this->response['response'], 1) : $this->response['response'];
+        return ($this->sendType == 'json' && is_string($this->response['response']))? json_decode($this->response['response'], 1) : $this->response['response'];
     }
     /**
      *	@description	
@@ -181,9 +181,9 @@ class Contents implements \HttpClient\IHttpClient
     /**
      *	@description	Single mechanism to fetch posts
      */
-    protected function fetchPost($service, $Dto)
+    protected function fetchPost(string $service, \SmartDto\Dto $Dto, $sep = '/')
     {
-        return $this->setService("{$service}/")
+        return $this->setService("{$service}{$sep}")
             ->addBody($Dto->toArray())
             ->post();
     }

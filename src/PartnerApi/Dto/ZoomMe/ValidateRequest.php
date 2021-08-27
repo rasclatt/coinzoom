@@ -10,7 +10,12 @@ class ValidateRequest extends \SmartDto\Dto
      */
     protected function beforeConstruct($array)
     {
-        $array['zoomMeHandle'] = trim(str_ireplace('ZoomMe:','', 'ZoomMe:'.($array['zoomMeHandle'])?? '');
+        if(!empty($array['handle']))
+            $handle = $array['handle'];
+        else
+            $handle = ($array['zoomMeHandle'])?? '';
+                
+        $array['zoomMeHandle'] = 'ZoomMe:'.trim(str_ireplace('ZoomMe:','', ('ZoomMe:'.$handle)));
         return $array;
     }
 }

@@ -1,7 +1,10 @@
 <?php
 namespace CoinZoom\PartnerApi;
 
-use \CoinZoom\PartnerApi\Dto\ZoomMe\ValidateRequest;
+use \CoinZoom\PartnerApi\Dto\ZoomMe\ {
+    ValidateRequest,
+    ValidateResponse
+};
 
 class ZoomMe extends \CoinZoom\Contents
 {
@@ -15,14 +18,15 @@ class ZoomMe extends \CoinZoom\Contents
     )
     {
         $this->request = $request;
-        parent::__construct('transfer/validate');
+        parent::__construct('transfer/validate/');
     }
     /**
      *	@description	
      *	@param	
      */
-    public function validate()
+    public function validate(): ValidateResponse
     {
-        return $this->fetchPost('zoomme', $this->request);
+        $data = $this->fetchPost('zoomme', $this->request, false);
+        return new ValidateResponse((!empty($data))? $data : []);
     }
 }

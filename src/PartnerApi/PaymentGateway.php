@@ -47,8 +47,11 @@ class PaymentGateway extends Contents
         $Create->returnUrl = (!empty($this->_webhook))? $this->_webhook : null;
         # Set the price expiration
         $Create->expiryMinutes = $this->expiration;
+        # Send request
+        $http = $this->setService(__FUNCTION__)->addBody($Create->toArray());
+        $resquest = $http->post();
         # Generate the order
-        return new PaymentResponse($this->setService(__FUNCTION__)->addBody($Create->toArray())->post());
+        return new PaymentResponse(!empty($resquest)? $resquest : null);
     }
     /**
      *	@description	Get the status of the order
