@@ -6,6 +6,7 @@ class Create
     public $price = 0;
     public $distid = 0;
     public $invoice = 0;
+    public $id = 0;
 
         /**
          *	@description	

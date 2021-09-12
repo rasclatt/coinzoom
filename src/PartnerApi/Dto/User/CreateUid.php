@@ -1,7 +1,7 @@
 <?php
 namespace CoinZoom\PartnerApi\Dto\User;
 
-class CreateUid extends \CoinZoom\PublicApi\Dto
+class CreateUid extends \SmartDto\Dto
 {
     public $minimumCardLevel = "Select";
     public $knownEmailAddress = "";

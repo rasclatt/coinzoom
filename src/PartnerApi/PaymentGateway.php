@@ -7,6 +7,7 @@ use \CoinZoom\ {
 };
 
 use \CoinZoom\PartnerApi\Dto\PaymentGateway\ {
+    CreateWithUuidRequest,
     Payment,
     Status,
     Response\Payment as PaymentResponse
@@ -52,6 +53,13 @@ class PaymentGateway extends Contents
         $resquest = $http->post();
         # Generate the order
         return new PaymentResponse(!empty($resquest)? $resquest : null);
+    }
+    /**
+     *	@description	Create the new order request
+     */
+    public function createWithUuid(float $price, CreateWithUuidRequest $Create): PaymentResponse
+    {
+        return $this->create($price, $Create);
     }
     /**
      *	@description	Get the status of the order

@@ -2,12 +2,15 @@
 namespace CoinZoom;
 
 use \CoinZoom\Currency;
-use \CoinZoom\Dto\Order\CreateRequest as OrderCreateRequest;
+use \CoinZoom\Dto\Order\ {
+    CreateRequest as OrderCreateRequest,
+    CreateWithUuidRequest
+};
 use \CoinZoom\PartnerApi\Dto\PaymentGateway\Create as PaymentGatewayDto;
 
 class Order extends Contents
 {
-    private $_price, $_distid, $_invoice, $_webhook, $paymentOptions, $Create;
+    private $_price, $_distid, $_invoice, $_webhook, $paymentOptions, $_referralToken, $Create;
     public $expiration = 15;
     /**
      *	@description	Set the order request data
@@ -40,9 +43,10 @@ class Order extends Contents
      */
     public function create(Currency $Currency)
     {
-        $this->_price   =   $this->Create->price;
-        $this->_distid  =   $this->Create->distid;
-        $this->_invoice =   $this->Create->invoice;
+        $this->_price = $this->Create->price;
+        $this->_distid = $this->Create->distid;
+        $this->_invoice = $this->Create->invoice;
+        $this->_referralToken = ($this->Create->referralToken)?? null;
         
         $currencies =   $Currency->toUsd($this->_price);
         $allowed    =   [];
@@ -52,15 +56,23 @@ class Order extends Contents
                 'price' => $currencies[$curr]
             ];
         }
-        # Create body object
-        $body = new OrderCreateRequest([
+        # Set the data
+        $data = [
             'description' => "Create order for invoice #{$this->_invoice} for user {$this->_distid}",
             'invoiceNumber' => $this->_invoice,
             'returnUrl' => (!empty($this->_webhook))? $this->_webhook : null,
             'expiryMinutes' => $this->expiration,
             'prices' => $allowed
-        ]);
-
+        ];
+        # If there is an order to create with UUID use different Dto
+        if(!empty($this->_referralToken)) {
+            # Set the uuid
+            $data['referralToken'] = $this->_referralToken;
+            $body = new CreateWithUuidRequest($data);
+        }
+        else {
+            $body = new OrderCreateRequest($data);
+        }
         $compile = $this->setService(__FUNCTION__)->addBody($body->toArray());
         $response = $compile->post();
         
