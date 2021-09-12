@@ -137,7 +137,7 @@ class Contents implements \HttpClient\IHttpClient
         }
         $context = stream_context_create($this->context);
         $fetch  =   @file_get_contents($this->endpoint, false, $context);
-        $this->response['headers'] =   $http_response_header;
+        $this->response['headers'] =   ($http_response_header)?? [];
         $this->response['response'] = $fetch;
         return $this;
     }
