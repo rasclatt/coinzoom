@@ -1,7 +1,7 @@
 <?php
 namespace CoinZoom\Dto\Order;
 
-class Create
+class Create extends \CoinZoom\Dto
 {
     public $price = 0;
     public $distid = 0;

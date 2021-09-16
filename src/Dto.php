@@ -1,4 +1,5 @@
 <?php
+
 namespace CoinZoom;
 
 class Dto extends \SmartDto\Dto
@@ -17,13 +18,12 @@ class Dto extends \SmartDto\Dto
      */
     protected function recurseConvert($obj)
     {
-        if($obj instanceof \SmartDto\Dto) {
+        if ($obj instanceof \SmartDto\Dto) {
             $obj = $obj->toArray();
-        }
-        elseif(!is_array($obj))
+        } elseif (!is_array($obj))
             return $obj;
 
-        foreach($obj as $k => $v) {
+        foreach ($obj as $k => $v) {
             $obj[$k] = $this->recurseCase($v);
         }
         return $obj;

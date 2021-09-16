@@ -4,7 +4,7 @@ namespace CoinZoom;
 use \CoinZoom\Currency;
 use \CoinZoom\Dto\Order\ {
     CreateRequest as OrderCreateRequest,
-    CreateWithUuidRequest
+    CreateRequestWithUuid as OrderCreateRequestWithUuid
 };
 use \CoinZoom\PartnerApi\Dto\PaymentGateway\Create as PaymentGatewayDto;
 
@@ -68,11 +68,12 @@ class Order extends Contents
         if(!empty($this->_referralToken)) {
             # Set the uuid
             $data['referralToken'] = $this->_referralToken;
-            $body = new CreateWithUuidRequest($data);
+            $body = new OrderCreateRequestWithUuid($data);
         }
         else {
             $body = new OrderCreateRequest($data);
         }
+        
         $compile = $this->setService(__FUNCTION__)->addBody($body->toArray());
         $response = $compile->post();
         

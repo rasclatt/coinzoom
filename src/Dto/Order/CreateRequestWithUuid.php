@@ -1,7 +1,7 @@
 <?php
 namespace CoinZoom\Dto\Order;
 
-class CreateWithUuidRequest extends Create
+class CreateRequestWithUuid extends CreateRequest
 {
     public $referralToken = '';
 }

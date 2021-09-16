@@ -1,4 +1,5 @@
 <?php
+
 namespace CoinZoom;
 
 use \CoinZoom\Dto\Content\Init;
@@ -41,7 +42,7 @@ class Contents implements \HttpClient\IHttpClient
         # Store final endpoint
         $this->endpoint =   $attr->endpoint;
         # Create our credential headers
-        foreach([
+        foreach ([
             'Coinzoom-Api-Key' => $attr->api_key,
             'Coinzoom-Api-Secret' => $attr->api_secret,
             'Content-type' => $attr->content_type
@@ -55,68 +56,67 @@ class Contents implements \HttpClient\IHttpClient
     private function getConnectionAttributes(string $baseService): Init
     {
         return new Init([
-            'endpoint' => constant('CZ_ENDPOINT_PUB'.((self::$mode)? '_DEV' : '')).$baseService,
-            'api_key' => (!empty(self::$apiKey))? self::$apiKey : constant('CZ_APIKEY'.((self::$mode)? '_DEV' : '')),
-            'api_secret' => (!empty(self::$apiSecret))? self::$apiSecret : constant('CZ_APISECRET'.((self::$mode)? '_DEV' : '')),
-            'content_type' => ($this->sendType == 'json')? 'application/json' : 'application/x-www-form-urlencoded'
+            'endpoint' => constant('CZ_ENDPOINT_PUB' . ((self::$mode) ? '_DEV' : '')) . $baseService,
+            'api_key' => (!empty(self::$apiKey)) ? self::$apiKey : constant('CZ_APIKEY' . ((self::$mode) ? '_DEV' : '')),
+            'api_secret' => (!empty(self::$apiSecret)) ? self::$apiSecret : constant('CZ_APISECRET' . ((self::$mode) ? '_DEV' : '')),
+            'content_type' => ($this->sendType == 'json') ? 'application/json' : 'application/x-www-form-urlencoded'
         ]);
     }
-	/**
-	 *	@description	Appends main endpoint with a service string
-	 */
-	public function setService(string $service)
+    /**
+     *	@description	Appends main endpoint with a service string
+     */
+    public function setService(string $service)
     {
         $this->endpoint .=  $service;
         return $this;
     }
-	/**
-	 *	@description	Adds headers to call
-	 */
-	public function addHeader($key, $value)
+    /**
+     *	@description	Adds headers to call
+     */
+    public function addHeader($key, $value)
     {
         $this->context['http']['header'][]    =   "{$key}: {$value}";
         return $this;
     }
-	/**
-	 *	@description	
-	 */
-	public function addAuth($token)
+    /**
+     *	@description	
+     */
+    public function addAuth($token)
     {
-        
     }
-	/**
-	 *	@description	
-	 */
-	public function addBody(array $array = null)
+    /**
+     *	@description	
+     */
+    public function addBody(array $array = null)
     {
         $this->body =   $array;
         return $this;
     }
-	/**
-	 *	@description	
-	 */
-	public function post()
+    /**
+     *	@description	
+     */
+    public function post()
     {
         return $this->init(__FUNCTION__)->getResponse();
     }
-	/**
-	 *	@description	
-	 */
-	public function patch()
+    /**
+     *	@description	
+     */
+    public function patch()
     {
         return $this->init(__FUNCTION__)->getResponse();
     }
-	/**
-	 *	@description	
-	 */
-	public function get()
+    /**
+     *	@description	
+     */
+    public function get()
     {
         return $this->init(__FUNCTION__)->getResponse();
     }
-	/**
-	 *	@description	
-	 */
-	public function delete()
+    /**
+     *	@description	
+     */
+    public function delete()
     {
         return $this->init(__FUNCTION__)->getResponse();
     }
@@ -127,17 +127,16 @@ class Contents implements \HttpClient\IHttpClient
     public function init($type)
     {
         $this->context['http']['method']    =   $type = strtoupper($type);
-        if(!empty($this->body)) {
-            if(in_array($type, ['POST', 'PATCH'])) {
-               $this->context['http']['content'] = ($this->sendType == 'json')? json_encode($this->body) : http_build_query($this->body);
-            }
-            else {
-                $this->endpoint .= '?'.http_build_query($this->body);
+        if (!empty($this->body)) {
+            if (in_array($type, ['POST', 'PATCH'])) {
+                $this->context['http']['content'] = ($this->sendType == 'json') ? json_encode($this->body) : http_build_query($this->body);
+            } else {
+                $this->endpoint .= '?' . http_build_query($this->body);
             }
         }
         $context = stream_context_create($this->context);
         $fetch  =   @file_get_contents($this->endpoint, false, $context);
-        $this->response['headers'] =   ($http_response_header)?? [];
+        $this->response['headers'] =   ($http_response_header) ?? [];
         $this->response['response'] = $fetch;
         return $this;
     }
@@ -155,7 +154,7 @@ class Contents implements \HttpClient\IHttpClient
      */
     public function getResponse()
     {
-        return ($this->sendType == 'json' && is_string($this->response['response']))? json_decode($this->response['response'], 1) : $this->response['response'];
+        return ($this->sendType == 'json' && is_string($this->response['response'])) ? json_decode($this->response['response'], 1) : $this->response['response'];
     }
     /**
      *	@description	
