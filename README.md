@@ -1,6 +1,11 @@
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+
+
 ## PHP SDK for Coinzoom
 
 It should be noted that this SDK is skewed towards Multi-level Marketing so there may be lingo related to that field so for example `distid`, would be a Member Id or Clent Id.
+
+> It should also be noted this is early stages of tooling and development.
 
 ### Example 1: Fetch countries
 
