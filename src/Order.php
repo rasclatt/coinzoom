@@ -1,8 +1,9 @@
 <?php
+
 namespace CoinZoom;
 
 use \CoinZoom\Currency;
-use \CoinZoom\Dto\Order\ {
+use \CoinZoom\Dto\Order\{
     CreateRequest as OrderCreateRequest,
     CreateRequestWithUuid as OrderCreateRequestWithUuid
 };
@@ -46,11 +47,11 @@ class Order extends Contents
         $this->_price = $this->Create->price;
         $this->_distid = $this->Create->distid;
         $this->_invoice = $this->Create->invoice;
-        $this->_referralToken = ($this->Create->referralToken)?? null;
-        
+        $this->_referralToken = ($this->Create->referralToken) ?? null;
+
         $currencies =   $Currency->toUsd($this->_price);
         $allowed    =   [];
-        foreach($this->paymentOptions as $curr) {
+        foreach ($this->paymentOptions as $curr) {
             $allowed[]  =   [
                 'currency' => $curr,
                 'price' => $currencies[$curr]
@@ -60,27 +61,26 @@ class Order extends Contents
         $data = [
             'description' => "Create order for invoice #{$this->_invoice} for user {$this->_distid}",
             'invoiceNumber' => $this->_invoice,
-            'returnUrl' => (!empty($this->_webhook))? $this->_webhook : null,
+            'returnUrl' => (!empty($this->_webhook)) ? $this->_webhook : null,
             'expiryMinutes' => $this->expiration,
             'prices' => $allowed
         ];
         # If there is an order to create with UUID use different Dto
-        if(!empty($this->_referralToken)) {
+        if (!empty($this->_referralToken)) {
             # Set the uuid
             $data['referralToken'] = $this->_referralToken;
             $body = new OrderCreateRequestWithUuid($data);
-        }
-        else {
+        } else {
             $body = new OrderCreateRequest($data);
         }
-        
+
         $compile = $this->setService(__FUNCTION__)->addBody($body->toArray());
         $response = $compile->post();
-        
-        if(empty($response)) {
+
+        if (empty($response)) {
             $h = $compile->getResponseHeaders();
-            $e = str_replace('HTTP/1.1','', array_shift($h));
-            throw new \Exception($e, preg_replace('/[^\d]/','',$e));
+            $e = str_replace('HTTP/1.1', '', array_shift($h));
+            throw new \Exception($e, preg_replace('/[^\d]/', '', $e));
         }
 
         return $response;

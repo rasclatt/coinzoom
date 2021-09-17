@@ -1,17 +1,18 @@
 <?php
+
 namespace CoinZoom;
 
-use \CoinZoom\PublicApi\ {
+use \CoinZoom\PublicApi\{
     Currency
 };
 
-use \CoinZoom\PartnerApi\ {
+use \CoinZoom\PartnerApi\{
     PaymentGateway as Gateway
 };
 
 use \CoinZoom\PartnerApi\Dto\Notes;
 
-use \CoinZoom\PartnerApi\Dto\PaymentGateway\ {
+use \CoinZoom\PartnerApi\Dto\PaymentGateway\{
     Payment as PaymentDto,
     Response\Payment as PaymentResponse
 };
@@ -45,7 +46,7 @@ class PaymentGateway
      */
     public function create(Notes $Notes = null): PaymentResponse
     {
-        if(!empty($Notes))
+        if (!empty($Notes))
             $this->Notes = $Notes;
         # Create the cz payment object
         $fetch = $this->Payment->create($this->price, new PaymentDto([
@@ -71,7 +72,7 @@ class PaymentGateway
      */
     public function setNote(string $note): PaymentGateway
     {
-        $this->Notes  =   new Notes([ 'note' => $note]);
+        $this->Notes  =   new Notes(['note' => $note]);
         # Allow for chaining
         return $this;
     }
@@ -79,9 +80,9 @@ class PaymentGateway
      *	@description	Sets the account receivable currencies allowed
      *	@param	$currencies [array] An array of payment types the account will accept
      */
-    public function setReceivables(array $currencies = [ 'USD' ]): PaymentGateway
+    public function setReceivables(array $currencies = ['USD']): PaymentGateway
     {
-        foreach($currencies as $currency) {
+        foreach ($currencies as $currency) {
             $this->Payment->setPaymentOption($currency);
         }
         # Allow chaining

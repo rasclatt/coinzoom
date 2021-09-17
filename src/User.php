@@ -1,11 +1,12 @@
 <?php
+
 namespace CoinZoom;
 
-use \CoinZoom\PartnerApi\ {
+use \CoinZoom\PartnerApi\{
     User as UserModel
 };
 
-use \CoinZoom\PartnerApi\Dto\ {
+use \CoinZoom\PartnerApi\Dto\{
     User\CreateUid,
     User\UpdateUid,
     User\GetSummary

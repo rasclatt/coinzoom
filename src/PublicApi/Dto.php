@@ -1,4 +1,5 @@
 <?php
+
 namespace CoinZoom\PublicApi;
 
 class Dto
@@ -9,28 +10,28 @@ class Dto
      */
     public function __construct(array $array = null)
     {
-        if(!is_array($array))
+        if (!is_array($array))
             return $this;
-        
-        foreach($array as $k => $v) {
-            if(!isset($this->{$k}))
+
+        foreach ($array as $k => $v) {
+            if (!isset($this->{$k}))
                 continue;
-                
-            switch(gettype($this->{$k})) {
-                case('boolean'):
+
+            switch (gettype($this->{$k})) {
+                case ('boolean'):
                     $this->{$k} = (bool) trim($v);
                     break;
-                case('string'):
+                case ('string'):
                     $this->{$k} = (string) trim($v);
                     break;
-                case('int'):
+                case ('int'):
                     $this->{$k} = (int) trim($v);
                     break;
                 default:
                     $this->{$k} = $v;
             }
-            
-            if(method_exists($this, $k))
+
+            if (method_exists($this, $k))
                 $this->{$k}();
         }
     }
@@ -43,7 +44,7 @@ class Dto
 
         $vars = get_class_vars(get_class($this));
         $new = [];
-        foreach($vars as $k => $v) {
+        foreach ($vars as $k => $v) {
             $new[$k] = $this->{$k};
         }
         return $new;
@@ -54,7 +55,7 @@ class Dto
     public function __call($method, $args = null)
     {
         $key = preg_replace('/^get/', '', $method);
-        if(isset($this->{$key}))
+        if (isset($this->{$key}))
             return $this->{$key};
         return false;
     }
@@ -72,25 +73,24 @@ class Dto
      */
     private function recurseToArray($array)
     {
-        if(!is_array($array) && !is_object($array))
+        if (!is_array($array) && !is_object($array))
             return $array;
 
-        if(is_object($array)) {
+        if (is_object($array)) {
             $vars = get_class_vars(get_class($array));
-            if(empty($vars))
+            if (empty($vars))
                 $new = $this->recurseToArray((array) $array);
             else {
-                foreach($vars as $k => $v) {
+                foreach ($vars as $k => $v) {
                     $new[$k] = $this->recurseToArray($array->{$k});
                 }
             }
-        }
-        elseif(is_array($array)) {
-            foreach($array as $k => $v) {
+        } elseif (is_array($array)) {
+            foreach ($array as $k => $v) {
                 $new[$k] = $this->recurseToArray($v);
             }
         }
 
-        return ($new)?? null;
+        return ($new) ?? null;
     }
 }
