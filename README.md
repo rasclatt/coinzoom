@@ -1,6 +1,6 @@
 ## PHP SDK for Coinzoom
 
-It should be noted that this SDK is skued towards Multi-level Marketing so there may be lingo related to that field so for example `distid`, would be a Member Id or Clent Id.
+It should be noted that this SDK is skewed towards Multi-level Marketing so there may be lingo related to that field so for example `distid`, would be a Member Id or Clent Id.
 
 ### Example 1: Fetch countries
 
