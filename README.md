@@ -56,6 +56,7 @@ class OnboardCreateRequest extends \SmartDto\Dto
     public $distid = '112932';
 }
 
+$coinzoomData = new OnboardCreateRequest();
 $Onboarding = new \CoinZoom\PartnerApi\Onboard();
 
 try {
