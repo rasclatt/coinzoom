@@ -83,3 +83,47 @@ else {
     print_r($data[0]->toArray());
 }
 ```
+
+### Example 4: Create a transaction
+
+```php
+use \CoinZoom\Dto\ {
+    Order\Create as OrderCreate,
+    Order\CreateWithUuidRequest as OrderCreateUuid
+};
+use \CoinZoom\ {
+    Order,
+    Currency,
+    Market
+};
+
+# Create an order dto to send to wallet
+$data = [
+    'distid' => $request->distid,
+    'invoice' => $request->invoice,
+    'price' => $request->total
+];
+# Create new user order
+if(!empty($request->referralToken)) {
+    $data['referralToken'] = $request->referralToken;
+    $CreateDto = new OrderCreateUuid($data);
+}
+# Create current user order
+else
+    $CreateDto = new OrderCreate($data);
+# Start transaction
+$CZ = new Order($CreateDto);
+# Set reply url (spinner)
+$CZ->setWebhook('https://www.example.com/webhook/')
+# Set the default currency
+    ->setPaymentOption('USD');
+# Try and create the CZ transaction
+try {
+    # Create the CZ transaction
+    $createTransaction = $CZ->create(new Currency(new Market()));
+}
+catch (\Exception $e) {
+    die('Wallet failed with error: '.$e->getMessage().':'.$e->getCode());
+}
+print_r($createTransaction);
+```
