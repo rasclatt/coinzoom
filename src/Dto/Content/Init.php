@@ -7,4 +7,5 @@ class Init extends \SmartDto\Dto
     public $api_key = '';
     public $api_secret = '';
     public $content_type = '';
+    public $user_agent = '';
 }

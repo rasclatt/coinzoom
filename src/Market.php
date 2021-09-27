@@ -1,5 +1,4 @@
 <?php
-
 namespace CoinZoom;
 
 class Market extends Contents

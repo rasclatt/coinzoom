@@ -1,8 +1,7 @@
 <?php
-
 namespace CoinZoom\PublicApi;
 
-use \CoinZoom\PublicApi\Dto\Order\{
+use \CoinZoom\PublicApi\Dto\Order\ {
     PlaceLimit,
     PlaceMarket,
     StopLimit,

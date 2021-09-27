@@ -15,16 +15,21 @@ class Guzzle implements \HttpClient\IHttpClient
 	public  $timeout    =   20;
 	private $options, $ch, $headers, $body, $endpoint;
 	private $sendType   =   'json';
+    public $partnerZoomme = false;
 	/**
 	 *	@description	
 	 */
-	public function __construct(string $endpoint = null)
+	public function __construct(string $endpoint = null, string $partnerZoomme = null)
 	{
+		$this->partnerZoomme = $partnerZoomme;
 		$this->endpoint =   $endpoint;
 
 		$this->addHeader('Coinzoom-Api-Key', (self::$mode) ? CZ_APIKEY_DEV : CZ_APIKEY)
-			->addHeader('Coinzoom-Api-Secret', (self::$mode) ? CZ_APISECRET_DEV : CZ_APISECRET)
-			->addHeader('Content-type', ($this->sendType == 'json') ? 'application/json' : 'application/x-www-form-urlencoded');
+		->addHeader('Coinzoom-Api-Secret', (self::$mode) ? CZ_APISECRET_DEV : CZ_APISECRET)
+		->addHeader('Content-type', ($this->sendType == 'json') ? 'application/json' : 'application/x-www-form-urlencoded');
+		# Add to header if public id is supplied
+		if(!empty($this->partnerZoomme))
+			$this->addHeader('User-Agent', 'ZoomMe: '.$this->partnerZoomme);
 	}
 	/**
 	 *	@description	

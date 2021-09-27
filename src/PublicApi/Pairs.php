@@ -1,5 +1,4 @@
 <?php
-
 namespace CoinZoom\PublicApi;
 
 class Pairs extends \CoinZoom\Contents

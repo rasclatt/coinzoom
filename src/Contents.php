@@ -26,6 +26,7 @@ class Contents implements \HttpClient\IHttpClient
     public static $mode = false;
     public static $apiKey = false;
     public static $apiSecret = false;
+    protected $partnerZoomme = false;
 
     private $endpoint, $context, $body, $response;
     private $sendType = 'json';
@@ -33,8 +34,9 @@ class Contents implements \HttpClient\IHttpClient
      *	@description	
      *	@param	
      */
-    public function __construct(string $baseService = null)
+    public function __construct(string $baseService = null, string $partnerZoomme = null)
     {
+        $this->partnerZoomme = $partnerZoomme;
         # Start the call attr
         $this->context['http']  =   [];
         # Set the connection attributes for the call
@@ -45,9 +47,12 @@ class Contents implements \HttpClient\IHttpClient
         foreach ([
             'Coinzoom-Api-Key' => $attr->api_key,
             'Coinzoom-Api-Secret' => $attr->api_secret,
-            'Content-type' => $attr->content_type
+            'Content-type' => $attr->content_type,
+            'User-Agent' => $attr->user_agent
         ] as $key => $value) {
-            $this->addHeader($key, $value);
+            # Check if there is a public id
+            if(($key != 'User-Agent') || (!empty($this->partnerZoomme) && $key == 'User-Agent'))
+                $this->addHeader($key, $value);
         }
     }
     /**
@@ -59,7 +64,8 @@ class Contents implements \HttpClient\IHttpClient
             'endpoint' => constant('CZ_ENDPOINT_PUB' . ((self::$mode) ? '_DEV' : '')) . $baseService,
             'api_key' => (!empty(self::$apiKey)) ? self::$apiKey : constant('CZ_APIKEY' . ((self::$mode) ? '_DEV' : '')),
             'api_secret' => (!empty(self::$apiSecret)) ? self::$apiSecret : constant('CZ_APISECRET' . ((self::$mode) ? '_DEV' : '')),
-            'content_type' => ($this->sendType == 'json') ? 'application/json' : 'application/x-www-form-urlencoded'
+            'content_type' => ($this->sendType == 'json') ? 'application/json' : 'application/x-www-form-urlencoded',
+            'user_agent' => 'ZoomMe: '.((!empty($this->partnerZoomme))?  $this->partnerZoomme : '')
         ]);
     }
     /**

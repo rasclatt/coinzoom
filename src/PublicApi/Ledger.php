@@ -1,5 +1,4 @@
 <?php
-
 namespace CoinZoom\PublicApi;
 
 class Ledger extends \CoinZoom\Contents

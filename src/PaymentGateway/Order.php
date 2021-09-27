@@ -1,12 +1,11 @@
 <?php
-
 namespace CoinZoom\PaymentGateway;
 
-use \CoinZoom\PartnerApi\{
+use \CoinZoom\PartnerApi\ {
     PaymentGateway\Order as OrderService
 };
 
-use \CoinZoom\PartnerApi\Dto\PaymentGateway\{
+use \CoinZoom\PartnerApi\Dto\PaymentGateway\ {
     Status,
     Response\Status as StatusResponse
 };
@@ -20,7 +19,7 @@ class Order
     public function __construct(string $id)
     {
         $this->id = $id;
-        $this->Order = new OrderService(new Status(['id' => $this->id]));
+        $this->Order = new OrderService(new Status([ 'id' => $this->id ]));
     }
     /**
      *	@description	Fetch the order summary

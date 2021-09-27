@@ -18,7 +18,7 @@ class ZoomMe extends \CoinZoom\Contents
     )
     {
         $this->request = $request;
-        parent::__construct('transfer/validate/');
+        parent::__construct('transfer/validate/', $request->zoomMeHandle);
     }
     /**
      *	@description	
