@@ -33,8 +33,7 @@ class Service
 		$this->partnerZoomme = $partnerZoomme;
 		$this->sendType	=	$sendType;
         $this->endpoint =   $_endpoint.$_uri;
-        $this
-		->addHeader('Coinzoom-Api-Key', (self::$mode)? CZ_APIKEY_DEV : CZ_APIKEY)
+        $this->addHeader('Coinzoom-Api-Key', (self::$mode)? CZ_APIKEY_DEV : CZ_APIKEY)
 		->addHeader('Coinzoom-Api-Secret', (self::$mode)? CZ_APISECRET_DEV : CZ_APISECRET)
 		->addHeader('Content-type', ($this->sendType == 'json')? 'application/json' : 'application/x-www-form-urlencoded');
 		# Add header if public zoomme is supplied
