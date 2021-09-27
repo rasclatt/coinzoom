@@ -1,7 +1,7 @@
 <?php
 namespace CoinZoom\PartnerApi;
 
-use \CoinZoom\PartnerApi\Dto\User\ {
+use \CoinZoom\PartnerApi\Dto\User\{
     CreateUid,
     Response\CreateUid as CreateUidResponse,
     GetSummary,
@@ -42,7 +42,7 @@ class User extends \CoinZoom\Contents
         # Fetch the main undecoded response
         $uuid = $this->getRawResponse();
         # Send data back
-        return new CreateUidResponse([ 'uuid' => $uuid ]);
+        return new CreateUidResponse(['uuid' => $uuid]);
     }
     /**
      *	@description    Updates the users's account tier
@@ -58,18 +58,18 @@ class User extends \CoinZoom\Contents
      */
     public function getSummary(GetSummary $Dto): GetSummaryResponse
     {
-        return new GetSummaryResponse($this->fetchPost('get', $Dto));
+        $data = $this->fetchPost('get', $Dto);
+        return new GetSummaryResponse((!empty($data)) ? $data : []);
     }
     /**
      *	@description	Allows altering of the Coinzoom tier
      */
     public function alterTierList(string $tier, $action = true)
     {
-        if($action) {
+        if ($action) {
             $this->accountTypes[] = $tier;
-        }
-        else {
-            if(in_array($tier, $this->accountTypes)) {
+        } else {
+            if (in_array($tier, $this->accountTypes)) {
                 unset($this->accountTypes[array_search($tier, $this->accountTypes)]);
             }
         }
